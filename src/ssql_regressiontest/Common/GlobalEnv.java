@@ -62,9 +62,6 @@ public class GlobalEnv {
 	
 	//getExeFilePath
 	private static String getExeFilePath() {
-		System.out.println("EXE_FILE_PATHS = "+EXE_FILE_PATHS);
-		//TODO macとwindowsで変わる
-		
 		String p = EXE_FILE_PATHS;
 		if (p.contains(":")) {		//ビルドバスの追加を行うと参照ライブラリ内のファイルのパスも付け加えてしまう仕様らしいので、:移行カット
 			p = p.substring(0, p.indexOf(":"));
@@ -72,22 +69,6 @@ public class GlobalEnv {
 		if (p.endsWith(".jar")) { 	//jarファイルを実行した場合（Eclipseから起動した場合は入らない）
 			p = p.substring(0, p.lastIndexOf(GlobalEnv.OS_FS));
 		}
-		
-//		EXE_FILE_PATHS.substring(0, EXE_FILE_PATHS.indexOf(":"));
-		
-		
-//	    public static String get_execDir(){
-//	        String libs = new File(GlobalEnv.EXE_FILE_PATH).getAbsolutePath();// 実行jarファイルの絶対パスを取得
-//
-//	        if (libs.contains(":")) {// ビルドバスの追加を行うと参照ライブラリ内のファイルのパスも付け加えてしまう仕様らしいので、:移行カット
-//	            libs = libs.substring(0, libs.indexOf(":"));
-//	        }
-//	        if (libs.endsWith(".jar")) { // jarファイルを実行した場合（Eclipseから起動した場合は入らない）
-//	            libs = libs.substring(0, libs.lastIndexOf(GlobalEnv.OS_FS));
-//	        }
-//	        return libs;
-//	    }
-		
 		return p;
 	}
 
