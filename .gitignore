@@ -6,3 +6,5 @@ bin/
 .settings/org.eclipse.core.resources.prefs
 .settings/org.eclipse.jdt.core.prefs
 .settings/*
+test_files/
+tmp/

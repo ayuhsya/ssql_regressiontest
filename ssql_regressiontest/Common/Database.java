@@ -111,6 +111,7 @@ public class Database {
 			
 			
 			e.printStackTrace();
+			return null;
 		}
 		return rs;
 	}

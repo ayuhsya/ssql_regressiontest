@@ -56,7 +56,7 @@ public class GlobalEnv {
 
 
 	public final static String SSQL_DRIVER = "sqlite";
-	public final static String SSQL_DB = Functions.getWorkingDir() + "/db/sample2.db";
+	public final static String SSQL_DB = Functions.getWorkingDir() + "/db/test_data.db";
 	public final static String SSQL_EXTENSION = ".ssql";
 	
 	

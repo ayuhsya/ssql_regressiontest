@@ -65,6 +65,7 @@ import ssql_regressiontest.Common.GlobalEnv;
 import ssql_regressiontest.ExecRegressionTest.Exec;
 import ssql_regressiontest.ExecRegressionTest.SSQL_exec;
 import ssql_regressiontest.GUI.TestResult_Detail.LineNumberView;
+import sun.rmi.runtime.Log;
 
 public class TestCase_Add extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -287,9 +288,10 @@ public class TestCase_Add extends JFrame {
 							//すべて入力されている場合
 							Database.connect();
 							//次のシリアルの値を取得している
-							String sql = "SELECT last_value+1 as seq_num FROM query_id_seq;";
+//							String sql = "SELECT last_value+1 as seq_num FROM query_id_seq;";
+							String sql = "SELECT seq+1 as seq_num FROM SQLITE_SEQUENCE WHERE name='query';";
 							ResultSet count_rs = Database.select(sql);
-							int seq_num = 0;
+							int seq_num = 1;
 							try {
 								while (count_rs.next()) {
 									seq_num = count_rs.getInt("seq_num");
@@ -297,9 +299,10 @@ public class TestCase_Add extends JFrame {
 							} catch (SQLException e) {
 								e.printStackTrace();
 							}
-							if(seq_num < 1){
-								//TODO エラー処理の追加
-							}
+							System.out.println("seq_num = "+seq_num);
+//							if(seq_num < 1){
+//								//TODO エラー処理の追加
+//							}
 
 							/* 変数の定義 */
 							String result = "";
@@ -669,7 +672,8 @@ public class TestCase_Add extends JFrame {
 			Database.insert(insert_sql);
 
 			//tagの次のidの番号を取得している
-			String tag_count_sql = "SELECT last_value+1 as tag_num FROM tag_t_id_seq;";
+//			String tag_count_sql = "SELECT last_value+1 as tag_num FROM tag_t_id_seq;";
+			String tag_count_sql = "SELECT seq+1 as tag_num FROM SQLITE_SEQUENCE WHERE name='tag';";
 			ResultSet tag_count_rs = Database.select(tag_count_sql);
 			int tag_num = 0;
 			try {

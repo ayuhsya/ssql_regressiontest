@@ -25,6 +25,7 @@ public class SSQL_exec implements Runnable {
 	//SuperSQLの実行
 	public static boolean execSuperSQL(String filename, String classPath, String driver, String db, String user, String host, String outDir) {
 		try{
+			System.out.println("driver="+driver+", db="+db+", outDir="+outDir);
 			String result = doExec(new String[]{
 					"java",
 					"-Dfile.encoding=UTF-8",
@@ -40,7 +41,7 @@ public class SSQL_exec implements Runnable {
 			if(result.equals("// completed normally //"))    return true;
 			else                                             return false;
 		}catch(Exception e){
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		}
 	}

@@ -95,7 +95,7 @@ public class Exec extends JFrame {
 			String classPath = Common.getClassPath();
 			String driver = "sqlite";
 			//			String workingDir = Functions.getWorkingDir();
-			String db = workingDir + GlobalEnv.OS_FS +"db"+GlobalEnv.OS_FS +"sample2.db";
+			String db = workingDir + GlobalEnv.OS_FS +"db"+GlobalEnv.OS_FS +"test_data.db";
 			System.out.println("-----------------------------------------------");
 
 
@@ -267,7 +267,7 @@ public class Exec extends JFrame {
 	// String classPath = Common.getClassPath();
 	// String driver = "sqlite";
 	// String workingDir = Functions.getWorkingDir();
-	// String db = workingDir + "/db/sample2.db";
+	// String db = workingDir + "/db/test_data.db";
 	// System.out.println("-----------------------------------------------");
 	//
 	//
