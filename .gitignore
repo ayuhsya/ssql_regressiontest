@@ -1,43 +1,8 @@
 *.DS_Store
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-*/*.DS_Store
-test*.html
->>>>>>> 056d651... The latest version
-
-test.html
-
-test.sql
-
-.ssql
-
-*.class
-
-config.ssql
-demo*.ssql
-demo*.sql
-
-*.db
-=======
 bin/
-README.md
 *.swp
 .project
->>>>>>> e25c9f5... The latest version
 .classpath
 .settings/org.eclipse.core.resources.prefs
 .settings/org.eclipse.jdt.core.prefs
-<<<<<<< HEAD
-.project
-<<<<<<< HEAD
-bin/
-=======
-bin/
-.checkstyle
-bin/
-js/script.js
-=======
 .settings/*
->>>>>>> e25c9f5... The latest version
->>>>>>> 056d651... The latest version
