@@ -342,18 +342,17 @@ public class TestCase_Add extends JFrame {
 							if (SSQL_exec.execSuperSQL(ssqlQueryName2,classPath, driver, db, null, null,resultDirTmp)) {
 								result = "◯"; //SSQL実行成功
 								System.out.println(result);
-								//ブラウザ表示を行うためのパス
-								String uriString = "file:///" + resultDirTmp +"q"+ seq_num + ".html";
-								OpenBrowser(uriString);
+								////ブラウザ表示を行うためのパス
+								//String uriString = "file:///" + resultDirTmp +"q"+ seq_num + ".html";
+								//OpenBrowser(uriString);
 
 								if(!Dialog.YesNoDialog("Resist OK?")){
 									System.out.println("tourokusinai");
 								}else{							
 									//								DBに登録する部分(insert())
-									if(insert(seq_num)){
+									if(insert(seq_num))
 										ssql_regressiontest.Common.Dialog.NormalDialog("Succeed(queryAdd)");
-										dispose();
-									}else
+									else
 										ssql_regressiontest.Common.Dialog.NormalDialog("Failed(queryAdd)");	
 									dispose();
 								}
@@ -418,19 +417,19 @@ public class TestCase_Add extends JFrame {
 										//エラー文章のクエリインサート文
 										String insert_sql_error = "INSERT INTO query "
 												+ "(q_title, q_name, q_contents, q_description, "
-												+ "q_author, q_day, output_id) VALUES "
+												+ "q_author, output_id) VALUES "
 												+ "('"+q_Title+"','"+fn+".ssql"+"','"+q+"','"
 												+queryDescriptionArea.getText()+"','"
-												+queryAuthor.getText()+"','now()','"
+												+queryAuthor.getText()+"','"
 												+output_Selected_index+"');" ;
 										Database.insert(insert_sql_error);
 										System.out.println(insert_sql_error);
 										//エラー文章の解答インサート文
 										String errorFileName = fn + "error.log";
 										String insert_err_result = "INSERT INTO result "
-												+ "(q_id, a_id, f_name, a_author, a_day, a_contents) VALUES "
+												+ "(q_id, a_id, f_name, a_author, a_contents) VALUES "
 												+ "("+seq_num+ "," + 1 +",'" + errorFileName + "' ,'"
-												+queryAuthor.getText()+"',now(),'"+err+"');";
+												+queryAuthor.getText()+"','"+err+"');";
 										Database.insert(insert_err_result);
 										System.out.println(insert_err_result);
 
@@ -665,9 +664,9 @@ public class TestCase_Add extends JFrame {
 			}};
 
 			//queryテーブルへインサート（挿入）
-			String insert_sql = "INSERT INTO query (q_title, q_name, q_contents, q_description, q_author, q_day, output_id) VALUES "
+			String insert_sql = "INSERT INTO query (q_title, q_name, q_contents, q_description, q_author, output_id) VALUES "
 					+ "('"+q_Title+"','"+fn+".ssql"+"','"+q+"','"+queryDescriptionArea.getText()+"','"
-					+queryAuthor.getText()+"','now()','"+output_Selected_index+"');" ;
+					+queryAuthor.getText()+"','"+output_Selected_index+"');" ;
 			System.out.println(insert_sql);
 			Database.insert(insert_sql);
 
@@ -688,6 +687,7 @@ public class TestCase_Add extends JFrame {
 			}
 
 			/***query_tagテーブルへの挿入***/
+			System.out.println("tag_name_model_B.getSize() = "+tag_name_model_B.getSize());
 			for(int i1=0 ; i1<  tag_name_model_B.getSize() ; i1++){
 				String insert_tagquery = "INSERT INTO querytag (q_id,t_id) VALUES"+ "('"+num+"','"+tagMap.get(tag_name_model_B.getElementAt(i1))+"');";
 				System.out.println(insert_tagquery);
@@ -703,6 +703,9 @@ public class TestCase_Add extends JFrame {
 			time = new Timestamp(System.currentTimeMillis());
 			readFolder(dir1, tmpFileDir, num);
 			Database.close();
+			
+			System.out.println("end");
+			
 			return true;
 	}
 

@@ -8,7 +8,6 @@ import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Timestamp;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -147,7 +146,8 @@ public class TopPage extends JFrame {
 		confData.setSsqlResultLocationPath(Preference.resultDirPathField.getText());
 		confData.setResultRegistNumber((Integer)Preference.model.getValue());
 		confData.setUserName(Preference.username_Field.getText());
-		confData.set_sqlite_db_path(Preference.sqlite_db_path_Field.getText());
+		confData.set_sqlite_db_path1(Preference.sqlite_db_path_Field1.getText());
+		confData.set_sqlite_db_path2(Preference.sqlite_db_path_Field2.getText());
 		if(Common.saveConfig(confData)){
 			System.out.println("Config save success");;
 		} else {

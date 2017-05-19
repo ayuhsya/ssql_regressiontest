@@ -15,24 +15,23 @@ import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ssql_regressiontest.Common.GlobalEnv;
 
 public class Preference extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	public static String username, selectedWorkingDir = "",  selectedOutDir = "" ,  selectedResultDir = "", selectedJar = "", sqlite_db_path = "";
-	private JPanel mainPanel, buttonPanel, ssqlPath_Panel, username_Panel, outDir_Fielld_Panel, resultDir_Fielld_Panel, sqlite_db_path_Panel;
-	private JButton pathButton, outDirButton, resultDirButton, jarButton, sqlite_db_path_Button;
+	public static String username, selectedWorkingDir = "",  selectedOutDir = "" ,  selectedResultDir = "", selectedJar = "", sqlite_db_path1 = "", sqlite_db_path2 = "";
+	private JPanel mainPanel, buttonPanel, ssqlPath_Panel, username_Panel, outDir_Fielld_Panel, resultDir_Fielld_Panel, sqlite_db_path_Panel1, sqlite_db_path_Panel2;
+	private JButton pathButton, outDirButton, resultDirButton, jarButton, sqlite_db_path_Button1, sqlite_db_path_Button2;
 	public static JTextField ssqlPathField;
 	public static JTextField outDirPathField;
 	public static JTextField resultDirPathField;
 	public static JTextField resultNumberField;
 	public static JTextField jarPathField;
 	public static JTextField username_Field;
-	public static JTextField sqlite_db_path_Field;
-	private JLabel ssqlPlace, username_Label, pathLabel, outDirLabel, resultDirLabel, resultNumberLabel, jarLabel, sqlite_db_path_Label;
+	public static JTextField sqlite_db_path_Field1, sqlite_db_path_Field2;
+	private JLabel ssqlPlace, username_Label, outDirLabel, resultDirLabel, resultNumberLabel, jarLabel, sqlite_db_path_Label1, sqlite_db_path_Label2;
 	private JPanel resultNumber_Fielld_Panel, jar_Fielld_Panel;
 	private JSpinner spinner;
 	public static SpinnerNumberModel model;
@@ -65,7 +64,8 @@ public class Preference extends JPanel {
 		// field
 		ssqlPath_Panel = new JPanel();
 		username_Panel = new JPanel();
-		sqlite_db_path_Panel = new JPanel();
+		sqlite_db_path_Panel1 = new JPanel();
+		sqlite_db_path_Panel2 = new JPanel();
 		outDir_Fielld_Panel = new JPanel();
 		resultDir_Fielld_Panel = new JPanel();
 		resultNumber_Fielld_Panel = new JPanel();
@@ -125,15 +125,24 @@ public class Preference extends JPanel {
 		username_Panel.add(username_Field);
 
 		//sqlite_db_path
-		sqlite_db_path_Label = new JLabel("Database(SQLite3):");
-		sqlite_db_path_Button = new JButton("Select");
-		sqlite_db_path_Field = new JTextField(GlobalEnv.sqlite_db_path, 60);
-		sqlite_db_path_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		sqlite_db_path_Panel.add(sqlite_db_path_Label);
-		sqlite_db_path_Panel.add(sqlite_db_path_Field);
-		sqlite_db_path_Panel.add(sqlite_db_path_Button);
-		sqlite_db_path_Field.setEnabled(false);
-		sqlite_db_path_Button.setEnabled(false);
+		sqlite_db_path_Label1 = new JLabel("Test Sets Database:");
+		sqlite_db_path_Label2 = new JLabel("Test Data Database:");
+		sqlite_db_path_Button1 = new JButton("Select");
+		sqlite_db_path_Button2 = new JButton("Select");
+		sqlite_db_path_Field1 = new JTextField(GlobalEnv.sqlite_db_path1, 60);
+		sqlite_db_path_Panel1.setLayout(new FlowLayout(FlowLayout.LEFT));
+		sqlite_db_path_Panel1.add(sqlite_db_path_Label1);
+		sqlite_db_path_Panel1.add(sqlite_db_path_Field1);
+		sqlite_db_path_Panel1.add(sqlite_db_path_Button1);
+		sqlite_db_path_Field1.setEnabled(false);
+		sqlite_db_path_Button1.setEnabled(false);
+		sqlite_db_path_Field2 = new JTextField(GlobalEnv.sqlite_db_path2, 60);
+		sqlite_db_path_Panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
+		sqlite_db_path_Panel2.add(sqlite_db_path_Label2);
+		sqlite_db_path_Panel2.add(sqlite_db_path_Field2);
+		sqlite_db_path_Panel2.add(sqlite_db_path_Button2);
+		sqlite_db_path_Field2.setEnabled(false);
+		sqlite_db_path_Button2.setEnabled(false);
 		
 
 		buttonPanel = new JPanel();
@@ -141,7 +150,7 @@ public class Preference extends JPanel {
 
 		//未入力の場合は登録されないようにする
 		//ユーザー名とパス記入されているかどうかで場合分けする
-		if (username == null || selectedWorkingDir == null || selectedOutDir == null || selectedResultDir == null || selectedJar == null || sqlite_db_path == null) {
+		if (username == null || selectedWorkingDir == null || selectedOutDir == null || selectedResultDir == null || selectedJar == null || sqlite_db_path1 == null || sqlite_db_path2 == null) {
 			System.out.println("empty");
 		} else {
 			ssqlPathField.setText(selectedWorkingDir);
@@ -149,13 +158,12 @@ public class Preference extends JPanel {
 			resultDirPathField.setText(selectedResultDir);
 			jarPathField.setText(selectedJar);
 			username_Field.setText(username);
-			sqlite_db_path_Field.setText(sqlite_db_path);
+			sqlite_db_path_Field1.setText(sqlite_db_path1);
+			sqlite_db_path_Field2.setText(sqlite_db_path2);
 		}	
 
 		//レイアウトボックスレイアウト！
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-//		mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
-		mainPanel.add(sqlite_db_path_Panel);
 		mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
 		mainPanel.add(ssqlPath_Panel);
 		mainPanel.add(jar_Fielld_Panel);
@@ -164,7 +172,10 @@ public class Preference extends JPanel {
 		mainPanel.add(resultNumber_Fielld_Panel);
 		mainPanel.add(username_Panel);
 		mainPanel.add(buttonPanel);
-//		mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
+		mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
+		mainPanel.add(sqlite_db_path_Panel1);
+		mainPanel.add(sqlite_db_path_Panel2);
+		mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
 		add(mainPanel);
 
 		//	//			登録ボタン
@@ -248,8 +259,8 @@ public class Preference extends JPanel {
 			}
 		});
 		
-		//SQLite3 Database Path
-		sqlite_db_path_Button.addActionListener(new AbstractAction() {
+		//SQLite3 Database Path 1
+		sqlite_db_path_Button1.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				JFileChooser filechooser3 = new JFileChooser("c:¥¥temp");
@@ -258,7 +269,21 @@ public class Preference extends JPanel {
 				int selected = filechooser3.showSaveDialog(null);
 				if (selected == JFileChooser.APPROVE_OPTION){
 					java.io.File file = filechooser3.getSelectedFile();
-					sqlite_db_path_Field.setText(file.getAbsolutePath());
+					sqlite_db_path_Field1.setText(file.getAbsolutePath());
+				}
+			}
+		});
+		//SQLite3 Database Path 2
+		sqlite_db_path_Button2.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				JFileChooser filechooser3 = new JFileChooser("c:¥¥temp");
+				filechooser3.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				//filechooser3.setFileFilter(new FileNameExtensionFilter(".db", "db"));
+				int selected = filechooser3.showSaveDialog(null);
+				if (selected == JFileChooser.APPROVE_OPTION){
+					java.io.File file = filechooser3.getSelectedFile();
+					sqlite_db_path_Field2.setText(file.getAbsolutePath());
 				}
 			}
 		});
@@ -270,7 +295,8 @@ public class Preference extends JPanel {
 				|| ssqlPathField.getText().isEmpty()
 				|| outDirPathField.getText().isEmpty()
 				|| resultDirPathField.getText().isEmpty()
-				|| sqlite_db_path_Field.getText().isEmpty()) {
+				|| sqlite_db_path_Field1.getText().isEmpty()
+				|| sqlite_db_path_Field2.getText().isEmpty()) {
 			return false;
 		} else 
 			return true;

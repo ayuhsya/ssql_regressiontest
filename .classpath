@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="libs/diffutils-1.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/postgresql-9.4.1208.jre6.jar"/>
 	<classpathentry kind="lib" path="libs/selenium-java-2.47.1.jar"/>
-	<classpathentry kind="lib" path="libs/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="libs/sqlite-jdbc-3.16.1.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

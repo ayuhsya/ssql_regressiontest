@@ -111,10 +111,11 @@ public class TestCase_List_Detail extends JFrame {
 		queryTitle_Panel.add(q_Title);
 		queryTitle_Panel.add(queryTitleField);
 
+		
 		// 作成日
 		q_Day = new JLabel("      Day : ");
 		queryDayField = new JTextField("", 30);
-		queryDayField.setText(queryDay.substring(0, 19));
+		queryDayField.setText(queryDay);	//queryDay.substring(0, 19)
 		queryDayField.setEditable(false); // 編集不可にしている
 		queryDay_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		queryDay_Panel.add(q_Day);
@@ -319,7 +320,7 @@ public class TestCase_List_Detail extends JFrame {
 				+ "FROM result r1, query q, output o "
 				+ "WHERE NOT EXISTS (  SELECT 1  FROM result r2  WHERE r1.q_id = r2.q_id AND r1.a_day < r2.a_day ) "
 				+ "AND r1.q_id = q.id AND q.output_id = o.o_id AND "
-				+ "id =" + queryID + "ORDER BY q.id ";
+				+ "id =" + queryID + " ORDER BY q.id ";
 		Database.connect();
 		ResultSet rs = Database.select(sql);
 

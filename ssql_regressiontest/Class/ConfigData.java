@@ -7,7 +7,8 @@ public class ConfigData {
 	private String ssql_result_location_path;
 	private int result_regist_number;
 	private String userName;
-	private String sqlite_db_path;
+	private String sqlite_db_path1;
+	private String sqlite_db_path2;
 
 	public ConfigData(){
 //		this.ssql_location_path = ssql_location_path;
@@ -37,8 +38,11 @@ public class ConfigData {
 	public void setUserName(String userName){
 		this.userName = userName;
 	}
-	public void set_sqlite_db_path(String sqlite_db_path){
-		this.sqlite_db_path = sqlite_db_path;
+	public void set_sqlite_db_path1(String sqlite_db_path1){
+		this.sqlite_db_path1 = sqlite_db_path1;
+	}
+	public void set_sqlite_db_path2(String sqlite_db_path2){
+		this.sqlite_db_path2 = sqlite_db_path2;
 	}
 
 	
@@ -60,8 +64,11 @@ public class ConfigData {
 	public String getUserName( ){
 		return userName;
 	}
-	public String get_sqlite_db_path( ){
-		return sqlite_db_path;
+	public String get_sqlite_db_path1( ){
+		return sqlite_db_path1;
+	}
+	public String get_sqlite_db_path2( ){
+		return sqlite_db_path2;
 	}
 
 }

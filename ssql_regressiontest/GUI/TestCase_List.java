@@ -1,21 +1,15 @@
 package ssql_regressiontest.GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -23,22 +17,17 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import ssql_regressiontest.Class.QueryDetail;
 import ssql_regressiontest.Common.Database;
-import ssql_regressiontest.Common.Functions;
-import ssql_regressiontest.ExecRegressionTest.Exec;
+import ssql_regressiontest.ExecRegressionTest.DB;
 
 
 public class TestCase_List extends JPanel {
@@ -281,12 +270,19 @@ public class TestCase_List extends JPanel {
 //				+ "AND r1.q_id = q.id AND q.output_id = o.o_id AND q.id = qt.q_id AND t.t_id = qt.t_id "
 //				+ "ORDER BY q.id ";
 
+		System.out.println(sql);
 		ResultSet rs = Database.select(sql);
+		
+		int number_of_row = DB.getNumberOfRow(rs);
+		
+		rs = Database.select(sql);
 		query_detail_list = new ArrayList<>();
 		// テーブル照会結果を出力
 		try {
 
 			while (rs.next()) {
+				System.out.println("number_of_row1 = "+rs.getRow());
+				
 				query_id  = rs.getInt("id");
 				query_title  = rs.getString("q_title");
 				query_tag = rs.getString("t_name");
@@ -298,7 +294,7 @@ public class TestCase_List extends JPanel {
 					current_query_tag = query_tag;
 					current_query_output = query_output;
 
-					if(rs.isLast()){
+					if(DB.isLast(rs.getRow(), number_of_row)){
 //						queryDetail = new QueryDetail(current_query_id, current_query_title, current_query_name, current_query_contents, current_query_description, current_query_author, current_query_day, current_result_contents, current_result_author, current_result_day,current_query_tag,current_query_output);
 //						query_detail_list.add(queryDetail);
 						insertTableData(current_query_id, current_query_title, current_query_tag, current_query_output);
@@ -307,7 +303,7 @@ public class TestCase_List extends JPanel {
 				} else {
 					if(current_query_id == query_id){
 						current_query_tag += ", " + query_tag;
-						if(rs.isLast()){
+						if(DB.isLast(rs.getRow(), number_of_row)){
 //							queryDetail = new QueryDetail(current_query_id, current_query_title, current_query_name, current_query_contents, current_query_description, current_query_author, current_query_day, current_result_contents, current_result_author, current_result_day,current_query_tag,current_query_output);
 //							query_detail_list.add(queryDetail);
 							insertTableData(current_query_id, current_query_title, current_query_tag, current_query_output);
@@ -325,7 +321,7 @@ public class TestCase_List extends JPanel {
 					}
 
 
-					if(rs.isLast()){
+					if(DB.isLast(rs.getRow(), number_of_row)){
 //						queryDetail = new QueryDetail(current_query_id, current_query_title, current_query_name, current_query_contents, current_query_description, current_query_author, current_query_day, current_result_contents, current_result_author, current_result_day,current_query_tag,current_query_output);
 //						query_detail_list.add(queryDetail);
 						insertTableData(current_query_id, current_query_title, current_query_tag, current_query_output);
@@ -342,6 +338,7 @@ public class TestCase_List extends JPanel {
 		}
 		Database.close();
 	}
+
 
 	//テーブルへデータを表示
 	private static int tableRowCount = 0;

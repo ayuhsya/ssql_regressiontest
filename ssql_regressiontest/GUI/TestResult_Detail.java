@@ -1,7 +1,6 @@
 package ssql_regressiontest.GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -10,16 +9,13 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.Label;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.peer.ButtonPeer;
 import java.io.File;
-import java.security.interfaces.RSAKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -57,7 +53,6 @@ import ssql_regressiontest.Class.QueryResults;
 import ssql_regressiontest.Class.RegressionTestResult;
 import ssql_regressiontest.Common.Common;
 import ssql_regressiontest.Common.Database;
-import ssql_regressiontest.Common.Dialog;
 import ssql_regressiontest.Common.GlobalEnv;
 
 public class TestResult_Detail extends JFrame {

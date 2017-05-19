@@ -57,9 +57,12 @@ public class DB {
 			System.out.println("sql(DB) = " + sql);
 			ResultSet rs = Database.select(sql);
 			Exec.count = 1;
+			
+			int number_of_row = DB.getNumberOfRow(rs);
+			
+			rs = Database.select(sql);
 			// テーブル照会結果を出力
 			//チェックが入っているテストケースの回数分だけ，while文が回る
-			int counter = 0;
 			while (rs.next()) {
 				query_title = rs.getString("q_title");
 				query_id = rs.getInt("id");
@@ -86,7 +89,8 @@ public class DB {
 					current_result_contents = result_contents;
 					current_result_name = result_name;
 					tagSet.add(current_query_tag);
-					if(rs.isLast()){
+					System.out.println(rs.getRow()+ " / "+rs);
+					if(DB.isLast(rs.getRow(), number_of_row)){
 						tagMap.put(current_query_id, tagSet);
 					}
 				} else {
@@ -95,7 +99,7 @@ public class DB {
 						tagSet.add(current_query_tag);
 						current_query_tag = query_tag;
 //						current_query_tag+=", " + query_tag;
-						if(rs.isLast()){
+						if(DB.isLast(rs.getRow(), number_of_row)){
 							tagMap.put(current_query_id, tagSet);
 						}
 					} else {
@@ -111,7 +115,7 @@ public class DB {
 						current_query_output = query_output;
 						current_result_contents = result_contents;
 						current_result_name = result_name; 
-						if(rs.isLast()){
+						if(DB.isLast(rs.getRow(), number_of_row)){
 							tagMap.put(current_query_id, tagSet);
 						}
 					}
@@ -167,6 +171,24 @@ public class DB {
 //		for(int i = 0; i < Test_Run_and_Result.result_all.size(); i++){
 //			System.out.println(i+": " + Test_Run_and_Result.result_all.get(i).getQueryID());
 //		}
+	}
+	
+	//getNumberOfRow()
+	public static int getNumberOfRow(ResultSet rs) {
+		int number_of_row = 0;
+		try {
+			while (rs.next()) {
+				number_of_row = rs.getRow();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return number_of_row;
+	}
+	
+	//isLast()
+	public static boolean isLast(int current_row, int number_of_row) {
+		return (current_row < number_of_row)? false : true;
 	}
 
 

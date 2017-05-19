@@ -110,7 +110,8 @@ public class Common {
 				+ "result_location=" + confData.getSsqlResultLocationPath() + GlobalEnv.OS_LS
 				+ "result_number=" + confData.getResultRegistNumber() + GlobalEnv.OS_LS
 				+ "user_name=" + confData.getUserName() + GlobalEnv.OS_LS
-				+ "sqlite_db_path=" + confData.get_sqlite_db_path() + GlobalEnv.OS_LS;
+				+ "sqlite_db_path1=" + confData.get_sqlite_db_path1() + GlobalEnv.OS_LS
+				+ "sqlite_db_path2=" + confData.get_sqlite_db_path2() + GlobalEnv.OS_LS;
 		System.out.println(GlobalEnv.CONFIG_FILE_NAME);
 		return createFile(GlobalEnv.CONFIG_FILE_NAME, tmp);
 	}
@@ -126,13 +127,15 @@ public class Common {
 			GlobalEnv.resultDir_Path = has(fileName, "result_location");
 			GlobalEnv.result_Num = Integer.parseInt(has(fileName, "result_number"));
 			GlobalEnv.user_Name = has(fileName, "user_name");
-			GlobalEnv.sqlite_db_path = has(fileName, "sqlite_db_path");
+			GlobalEnv.sqlite_db_path1 = has(fileName, "sqlite_db_path1");
+			GlobalEnv.sqlite_db_path2 = has(fileName, "sqlite_db_path2");
 			if(GlobalEnv.ssql_Path.isEmpty() 
 					|| GlobalEnv.libs_Path.isEmpty() 
 					|| GlobalEnv.outDir_Path.isEmpty() 
 					|| GlobalEnv.resultDir_Path.isEmpty() 
 					|| GlobalEnv.user_Name.isEmpty()
-					|| GlobalEnv.sqlite_db_path.isEmpty()
+					|| GlobalEnv.sqlite_db_path1.isEmpty()
+					|| GlobalEnv.sqlite_db_path2.isEmpty()
 					){
 				GlobalEnv.configFlag = false;
 			}else{

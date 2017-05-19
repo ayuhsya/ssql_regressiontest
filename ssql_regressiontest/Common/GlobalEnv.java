@@ -41,7 +41,7 @@ public class GlobalEnv {
 	public static String resultDir_Path = "";
 	public static int result_Num = 5;
 	public static String user_Name = "";
-	public static String sqlite_db_path = "";
+	public static String sqlite_db_path1 = "", sqlite_db_path2 = "";
 	//	static JTextField ssqlPathField = new JTextField();
 	//	static JTextField outDirPathField = new JTextField();
 	//	static JTextField resultDirPathField = new JTextField();
