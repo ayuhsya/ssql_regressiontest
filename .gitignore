@@ -8,3 +8,4 @@ bin/
 .settings/*
 test_files/
 tmp/
+.config
