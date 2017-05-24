@@ -97,6 +97,11 @@ public class Database {
 		}
 	}
 	
+	//getEscapedString
+	public static String getEscapedString(String value) {
+		return value.replace("'", "''");
+	}
+	
 	//
 	// 機能 : データベースのupdate
 	//

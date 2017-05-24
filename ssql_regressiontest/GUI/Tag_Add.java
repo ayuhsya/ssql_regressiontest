@@ -129,7 +129,7 @@ public class Tag_Add extends JFrame {
 					search_tag_rs.close();
 					if (number == 0) {
 						//重複していない場合(個数が0)
-						String insert_new_tag = "INSERT INTO tag(t_name) VALUES('"+tagField.getText()+"');";
+						String insert_new_tag = "INSERT INTO tag(t_name) VALUES('"+Database.getEscapedString(tagField.getText())+"');";
 						//							System.out.println(insert_new_tag);
 						Database.insert(insert_new_tag);
 					}else{

@@ -410,7 +410,7 @@ public class TestCase_Add extends JFrame {
 											String insert_tagquery = "INSERT INTO querytag "
 													+ "(q_id,t_id) VALUES"+ "('"
 													+ seq_num+"','"
-													+tagMap.get(tag_name_model_B.getElementAt(i1))+"');";
+													+ tagMap.get(tag_name_model_B.getElementAt(i1))+"');";
 											System.out.println(insert_tagquery);
 											Database.insert(insert_tagquery);
 										}
@@ -418,18 +418,23 @@ public class TestCase_Add extends JFrame {
 										String insert_sql_error = "INSERT INTO query "
 												+ "(q_title, q_name, q_contents, q_description, "
 												+ "q_author, output_id) VALUES "
-												+ "('"+q_Title+"','"+fn+".ssql"+"','"+q+"','"
-												+queryDescriptionArea.getText()+"','"
-												+queryAuthor.getText()+"','"
-												+output_Selected_index+"');" ;
+												+ "("
+												+ "'"+Database.getEscapedString(q_Title)+"',"
+												+ "'"+Database.getEscapedString(fn)+".ssql"+"',"
+												+ "'"+Database.getEscapedString(q)+"',"
+												+ "'"+Database.getEscapedString(queryDescriptionArea.getText())+"',"
+												+ "'"+Database.getEscapedString(queryAuthor.getText())+"',"
+												+ "'"+output_Selected_index+"');" ;
 										Database.insert(insert_sql_error);
 										System.out.println(insert_sql_error);
 										//エラー文章の解答インサート文
 										String errorFileName = fn + "error.log";
 										String insert_err_result = "INSERT INTO result "
 												+ "(q_id, a_id, f_name, a_author, a_contents) VALUES "
-												+ "("+seq_num+ "," + 1 +",'" + errorFileName + "' ,'"
-												+queryAuthor.getText()+"','"+err+"');";
+												+ "("+seq_num+ "," + 1 +","
+												+ "'"+Database.getEscapedString(errorFileName)+"' ,"
+												+ "'"+Database.getEscapedString(queryAuthor.getText())+"',"
+												+ "'"+Database.getEscapedString(err)+"');";
 										Database.insert(insert_err_result);
 										System.out.println(insert_err_result);
 
@@ -665,8 +670,13 @@ public class TestCase_Add extends JFrame {
 
 			//queryテーブルへインサート（挿入）
 			String insert_sql = "INSERT INTO query (q_title, q_name, q_contents, q_description, q_author, output_id) VALUES "
-					+ "('"+q_Title+"','"+fn+".ssql"+"','"+q+"','"+queryDescriptionArea.getText()+"','"
-					+queryAuthor.getText()+"','"+output_Selected_index+"');" ;
+					+ "("
+					+ "'"+Database.getEscapedString(q_Title)+"',"
+					+ "'"+Database.getEscapedString(fn)+".ssql"+"',"
+					+ "'"+Database.getEscapedString(q)+"',"
+					+ "'"+Database.getEscapedString(queryDescriptionArea.getText())+"',"
+					+ "'"+Database.getEscapedString(queryAuthor.getText())+"',"
+					+ "'"+output_Selected_index+"');" ;
 			System.out.println(insert_sql);
 			Database.insert(insert_sql);
 
@@ -747,7 +757,11 @@ public class TestCase_Add extends JFrame {
 		//実行結果をresultテーブルへ挿入する
 		String insert_result = 
 				"INSERT INTO result (q_id, a_id, f_name ,a_author, a_day, a_contents) VALUES "
-						+ "("+num+ "," + 1 +",'"+tmpFileName+"','"+queryAuthor.getText()+"', '"+time+"','"+result_contents1+"');";
+						+ "("+num+ "," + 1 +","
+						+ "'"+Database.getEscapedString(tmpFileName)+"',"
+						+ "'"+Database.getEscapedString(queryAuthor.getText())+"', "
+						+ "'"+time+"',"
+						+ "'"+Database.getEscapedString(result_contents1)+"');";
 		System.out.println("クエリ: " + insert_result);
 		Database.insert(insert_result);
 	}

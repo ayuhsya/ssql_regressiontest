@@ -86,7 +86,11 @@ public class TestResult_replaceResult {
 						aContents = aContents.replace("'", "''");
 						String insert_result = 
 								"INSERT INTO result (q_id, a_id, f_name ,a_author, a_day, a_contents) VALUES "
-										+ "("+qid+ "," + NUM_OF_RESULTS +",'"+fName+"','"+author+"', '" + time +"','"+aContents+"');";
+										+ "("+qid+ "," + NUM_OF_RESULTS +","
+										+ "'"+Database.getEscapedString(fName)+"',"
+										+ "'"+Database.getEscapedString(author)+"', "
+										+ "'"+time+"',"
+										+ "'"+Database.getEscapedString(aContents)+"');";
 						insertQueryArray.add(insert_result);
 					}
 					for (int i = 0; i < insertQueryArray.size(); i++) {
@@ -108,7 +112,11 @@ public class TestResult_replaceResult {
 						Timestamp now = new Timestamp(System.currentTimeMillis());
 						String insert_result = 
 								"INSERT INTO result (q_id, a_id, f_name ,a_author, a_day, a_contents) VALUES "
-										+ "("+qid+ "," + (x+1) +",'"+fName+"','"+author+"', '" + now +"','"+aContents+"');";
+										+ "("+qid+ "," + (x+1) +","
+										+ "'"+Database.getEscapedString(fName)+"',"
+										+ "'"+Database.getEscapedString(author)+"', "
+										+ "'"+now+"',"
+										+ "'"+Database.getEscapedString(aContents)+"');";
 						insertQueryArray.add(insert_result);
 					}
 					for (int i = 0; i < insertQueryArray.size(); i++) {
@@ -172,7 +180,11 @@ public class TestResult_replaceResult {
 		//実行結果をresultテーブルへ挿入する
 		String insert_result = 
 				"INSERT INTO result (q_id, a_id, f_name ,a_author, a_day, a_contents) VALUES "
-						+ "("+num+ "," + n +",'"+tmpFileName+"','"+GlobalEnv.user_Name+"', '" + time+"','"+result_contents1+"');";
+						+ "("+num+ "," + n +","
+						+ "'"+Database.getEscapedString(tmpFileName)+"',"
+						+ "'"+Database.getEscapedString(GlobalEnv.user_Name)+"', "
+						+ "'"+time+"',"
+						+ "'"+Database.getEscapedString(result_contents1)+"');";
 		System.out.println("クエリ: " + insert_result);
 		Database.insert(insert_result);
 	}
