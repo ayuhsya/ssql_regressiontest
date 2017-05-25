@@ -65,7 +65,7 @@ public class Tag_List extends JPanel {
 	public static JPanel query_List_Panel;
 	private static JButton[] bt;
 	private static int i;
-	private final static String[] columnName_list = {"No", "Testcase_id", "Name", "Tag","Output", "Details"};
+	private final static String[] columnName_list = {"No", "Testcase_id", "Name", "Tag", "Output", "Details"};
 	private static JButton tag_addButton, tag_deleteButton;
 	private static JTextField tag_name_Field;
 	private static JTable table1;
@@ -140,6 +140,13 @@ public class Tag_List extends JPanel {
 						}
 					}
 					return c;
+				}
+				
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					if(column==5)	//Editable column: Details
+						return true;
+					return false;
 				}
 			};
 			DefaultTableCellRenderer rend;

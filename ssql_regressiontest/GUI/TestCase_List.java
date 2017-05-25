@@ -92,6 +92,13 @@ public class TestCase_List extends JPanel {
 					}
 					return c;
 				}
+				
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					if(column==2 || column==6)	//Editable columns: Testcase_id, Details
+						return true;
+					return false;
+				}
 			};
 			DefaultTableCellRenderer rend;
 			rend = new DefaultTableCellRenderer();

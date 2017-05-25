@@ -194,6 +194,13 @@ public class Test_Run_and_Result extends JPanel {
 				}
 				return c;
 			}
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if(column==7)	//Editable column: Details
+					return true;
+				return false;
+			}
 		};
 		TableColumn column;
 		DefaultTableCellRenderer rend;
