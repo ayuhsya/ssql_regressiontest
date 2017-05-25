@@ -452,6 +452,8 @@ public class Test_Run_and_Result extends JPanel {
 								}
 							}
 						}
+						if(qTreeSet.size()<1)	return;
+						
 						it = qTreeSet.iterator();
 						partQuery = "";
 						partQuery += "AND (";
