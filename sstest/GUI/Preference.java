@@ -74,7 +74,7 @@ public class Preference extends JPanel {
 		ssqlPathField = new JTextField("", 35);
 		// 初期値
 		ssqlPathField.setText(GlobalEnv.ssql_Path);
-		ssqlPlace = new JLabel("SSQL本体の位置:");
+		ssqlPlace = new JLabel("Location of SSQL body(<path_to_ssql>/target/classes):");
 		pathButton = new JButton("Select");
 		ssqlPath_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		ssqlPath_Panel.add(ssqlPlace);
@@ -82,7 +82,7 @@ public class Preference extends JPanel {
 		ssqlPath_Panel.add(pathButton);
 		//SSQL本体で使用するライブラリを格納しているディレクトリ指定
 		jarPathField = new JTextField(GlobalEnv.libs_Path, 35);
-		jarLabel = new JLabel("使用するライブラリを格納しているディレクトリ:");
+		jarLabel = new JLabel("Directory containing the libraries to use(SSQL libs):");
 		jarButton = new JButton("Select");
 		jar_Fielld_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jar_Fielld_Panel.add(jarLabel);
@@ -90,7 +90,7 @@ public class Preference extends JPanel {
 		jar_Fielld_Panel.add(jarButton);
 		//出力先
 		outDirPathField = new JTextField(GlobalEnv.outDir_Path, 35);
-		outDirLabel = new JLabel("実行結果出力先:");
+		outDirLabel = new JLabel("Execution result output destination:");
 		outDirButton = new JButton("Select");
 		outDir_Fielld_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		outDir_Fielld_Panel.add(outDirLabel);
@@ -98,7 +98,7 @@ public class Preference extends JPanel {
 		outDir_Fielld_Panel.add(outDirButton);
 		//解答出力先
 		resultDirPathField = new JTextField(GlobalEnv.resultDir_Path, 35);
-		resultDirLabel = new JLabel("解答出力先:");
+		resultDirLabel = new JLabel("Answer output destination:");
 		resultDirButton = new JButton("Select");
 		resultDir_Fielld_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		resultDir_Fielld_Panel.add(resultDirLabel);
