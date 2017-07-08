@@ -44,7 +44,7 @@ public class TopPage extends JFrame {
 
 	public TopPage() {
 		setLocationRelativeTo(null);								//中央に表示させる
-		addWindowListener(new MyWindowAdapter());					//閉じるボタンを押した時の処理
+		addWindowListener(new MyWindowAdapter());				//閉じるボタンを押した時の処理
 		
 		//TODO
 		try {
@@ -65,9 +65,15 @@ public class TopPage extends JFrame {
 
 		preference = new Preference();
 		tabbedpane.addTab("Regression Test Run", new Test_Run_and_Result());
-		tabbedpane.addTab("Test case List", new TestCase_List());
-		tabbedpane.addTab("Tag List", new Tag_List());
-		tabbedpane.addTab("Preference", preference);
+		
+		// Add tabbed pane here for create reference
+		tabbedpane.addTab("Create Reference", new Generate_Reference());
+		
+		tabbedpane.addTab("Test cases List", new TestCase_List());
+		tabbedpane.addTab("Tags List", new Tag_List());
+		tabbedpane.addTab("Preferences", preference);
+		
+
 		tabbedpane.setBackground(Color.WHITE);//ここですべてのタブの色を設定しています。
 
 		// 設定ファイルの読み込み(.coufigファイルが存在していない時)

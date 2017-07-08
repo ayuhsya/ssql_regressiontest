@@ -7,5 +7,7 @@ bin/
 .settings/org.eclipse.jdt.core.prefs
 .settings/*
 test_files/
+test_results/
 tmp/
 .config
+backstop/

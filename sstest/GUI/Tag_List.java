@@ -141,7 +141,7 @@ public class Tag_List extends JPanel {
 					}
 					return c;
 				}
-				
+
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					if(column==5)	//Editable column: Details
@@ -156,7 +156,7 @@ public class Tag_List extends JPanel {
 			table1.getColumnModel().getColumn(1).setCellRenderer(rend);
 			table1.getColumnModel().getColumn(2).setCellRenderer(rend);
 			table1.getColumnModel().getColumn(4).setCellRenderer(rend);
-			//			table1.getColumn("Title").setCellRenderer.setAlignmentX(CENTER_ALIGNMENT);
+			// table1.getColumn("Title").setCellRenderer.setAlignmentX(CENTER_ALIGNMENT);
 			table1.getTableHeader().setReorderingAllowed(false);	
 
 			//確認ボタン
