@@ -95,7 +95,7 @@ public class Test_Run_and_Result extends JPanel {
 	private JPanel SSQLexecFailedPanel;
 	private JPanel queryNumberPanel;
 	public static JPanel barPanel;
-	private JButton stopButton, updateButton;
+	private JButton stopButton, updateButton, browserReport;
 	public static JButton execButton;
 	private JScrollPane sp;
 	private static JLabel FailedLabel, PassLabel, SSQLexecFailedLabel,
@@ -294,11 +294,14 @@ public class Test_Run_and_Result extends JPanel {
 		updateButton.setEnabled(false); // 一回目からアップデートはできないから
 		execButton = new JButton("Execute");
 		// execButton.setEnabled(false);
+		browserReport = new JButton("Browser Report");
+		browserReport.setVisible(false);
 
 		buttonPanel = new JPanel();
 		buttonPanel.add(execButton);
 		// buttonPanel.add(stopButton);
 		buttonPanel.add(updateButton);
+		buttonPanel.add(browserReport);
 
 		// ツリーを作る
 		TreeTestPanel = new JTreeTest();
@@ -390,6 +393,33 @@ public class Test_Run_and_Result extends JPanel {
 				result_detail();
 				TestResult_Detail.display(al, Integer.parseInt(tableModel
 						.getValueAt(row, 1).toString()), query_result);
+			}
+		});
+		
+		browserReport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final String[] Command = {"/usr/local/bin/backstop", "openReport"};
+				
+				try {
+			    		ProcessBuilder builder = new ProcessBuilder(Command);
+			    		builder.redirectErrorStream(true);
+			    		builder.directory(new File(backstopRootPath));
+			    		Map<String, String> env =  builder.environment();
+			    		env.put("PATH", "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+					Process p = builder.start();
+					
+					try {
+						p.waitFor();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 
@@ -534,6 +564,9 @@ public class Test_Run_and_Result extends JPanel {
 									else
 										tableModel.setValueAt(incorrect, count, 8);
 								}
+								
+
+								browserReport.setVisible(true);
 								
 							} catch (InterruptedException e1) {
 								// TODO Auto-generated catch block
