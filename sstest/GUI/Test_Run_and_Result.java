@@ -13,11 +13,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.Vector;
 
@@ -44,6 +54,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import sstest.Class.QueryResults;
 import sstest.Class.RegressionTestResult;
@@ -87,7 +104,7 @@ public class Test_Run_and_Result extends JPanel {
 	private static JTable table;
 	private static DefaultTableModel tableModel;
 	private final static String[] columnName = { "No", "Testcase_id", "File Name",
-		"Name", "Result", "Tag", "Media", "Details" };
+		"Name", "Result", "Tag", "Media", "Details", "CSS Test"};
 	private final static int rowNum = 0; // 100;
 	private JButton kakuninButton = new JButton();
 	public static JProgressBar progressBar0;
@@ -100,7 +117,13 @@ public class Test_Run_and_Result extends JPanel {
 	private ArrayList<RegressionTestResult> al = null;
 	private JComboBox<String> stateCombo;
 	private Vector<String> stateVector;
-
+	
+	// Backstop Variables
+	private static String concatenatedPathString = "";
+	private static String backstopRootPath = "/Users/ayushya/Documents/eclipse-workspace/sstest/backstop";
+	private static String backstopTestPath = "/Users/ayushya/Documents/eclipse-workspace/sstest/backstop/backstop_data/test_htmls";
+	private static String backstopResultPath = "/Users/ayushya/Documents/eclipse-workspace/sstest/backstop/backstop_data/ci_report/xunit.xml";
+	
 	private static Test_Run_and_Result frame = null;
 
 	public static TreeSet<Integer> qTreeSet = new TreeSet<Integer>();
@@ -176,6 +199,7 @@ public class Test_Run_and_Result extends JPanel {
 			public Class<?> getColumnClass(int column) {
 				return getValueAt(0, column).getClass();
 			}
+		
 		};
 		table = new JTable(tableModel) {
 			public Component prepareRenderer(TableCellRenderer tcr, int row,
@@ -195,7 +219,7 @@ public class Test_Run_and_Result extends JPanel {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				if(column==7)	//Editable column: Details
+				if(column==7 || column==8)	//Editable column: Details
 					return true;
 				return false;
 			}
@@ -222,17 +246,13 @@ public class Test_Run_and_Result extends JPanel {
 		table.getColumn("No").setPreferredWidth(20);
 		table.getColumn("Testcase_id").setPreferredWidth(65);
 		table.getColumn("File Name").setPreferredWidth(60);
-		table.getColumn("Name").setPreferredWidth(200);
+		table.getColumn("Name").setPreferredWidth(100);
 		table.getColumn("Result").setPreferredWidth(30);
 		table.getColumn("Media").setPreferredWidth(70);
 		table.getColumn("Tag").setPreferredWidth(150);
 		table.getColumn("Details").setPreferredWidth(70);
+		table.getColumn("CSS Test").setPreferredWidth(100);
 
-		// 進捗バー
-		// progressBar0 = new JProgressBar(0,get_NUM); // 最小、最大
-		// progressBar0.setPreferredSize(new Dimension(300, 40)); // バーのサイズ
-		// // progressBar0.setStringPainted(true);// パーセンテージ表示
-		// barPanel.add(progressBar0);
 		// 値の更新はRowNumをいれている
 		barPanel = new JPanel();
 
@@ -330,9 +350,6 @@ public class Test_Run_and_Result extends JPanel {
 		Information_Panel.add(FailedPanel);
 		Information_Panel.add(SSQLexecSuccessPanel);
 		Information_Panel.add(SSQLexecFailedPanel);
-		// Information_Panel.add(StartTimeLabel);
-		// Information_Panel.add(EndTimeLabel);
-		// Information_Panel.add(RunTimeLabel);
 
 		Information_Panel.setBorder(new TitledBorder(new EtchedBorder(),
 				"Information")); // ボーダーの部分
@@ -373,43 +390,6 @@ public class Test_Run_and_Result extends JPanel {
 				result_detail();
 				TestResult_Detail.display(al, Integer.parseInt(tableModel
 						.getValueAt(row, 1).toString()), query_result);
-
-				// row = table.getEditingRow();
-				//
-				// if(al == null) al = result_all;
-				// int q_id = al.get(row).getNum();
-				// String fn = al.get(row).getQueryFileName();
-				// String result = al.get(row).getResult();
-				// String diff = al.get(row).getDiff();
-				// ArrayList<Integer> el_old = new
-				// ArrayList<Integer>(al.get(row).getDiff_lines_old());
-				// ArrayList<Integer> el_new = new
-				// ArrayList<Integer>(al.get(row).getDiff_lines_new());
-				//
-				//
-				// //Details確認ボタンのアクションは実行失敗・diffの値によって場合分け
-				// if(result.startsWith("◯")){ //同じHTMLのとき、同じSSQL実行結果の時
-				// //テストケースidと同じクエリidを持っている解答を取得する
-				// result_detail();
-				// result_Detail.display(el_old, el_new, q_id, query_result,
-				// fn);
-				//
-				// }else if (result.startsWith("△")) {
-				// //テストケースidと同じクエリidを持っている解答を取得する
-				// result_detail();
-				// result_Detail_SSQLexec_Successed.display(el_old, el_new,q_id,
-				// query_result, fn);
-				// }else if (result.startsWith("▲")) {
-				// result_detail();
-				// result_Detail_SSQLExec_failed.display(fn, result, diff, q_id,
-				// el_old, el_new, query_result);
-				// }else if (result.startsWith("×")){ //違うHTMLのとき
-				// result_detail();
-				// result_Detail_Different.display(fn, result, diff, q_id,
-				// el_old, el_new, query_result);
-				// }else {
-				// Dialog.ErrorDialog("Error!");
-				// }
 			}
 		});
 
@@ -434,8 +414,8 @@ public class Test_Run_and_Result extends JPanel {
 
 						// 選択されているテストケースを取得している
 						DefaultMutableTreeNode root;
-						root = (DefaultMutableTreeNode) JTreeTest.model
-								.getRoot();
+						root = (DefaultMutableTreeNode) JTreeTest.model.getRoot();
+						
 						Enumeration enu = root.breadthFirstEnumeration();
 						while (enu.hasMoreElements()) {
 							node = (DefaultMutableTreeNode) enu.nextElement();
@@ -490,8 +470,83 @@ public class Test_Run_and_Result extends JPanel {
 
 						progressBar0.setValue(0);
 						progressBar0.setVisible(true);
+						
 						// 回帰テスト実行している
 						sstest.ExecRegressionTest.DB.db();
+						
+						listFilesForFolder(new File(backstopTestPath));
+						
+						// Backstop plugin
+						final String[] Command = {"/usr/local/bin/backstop", "test", "--configPath=backstop-settings.js", "--paths=" + concatenatedPathString};				
+						try {
+					    		ProcessBuilder builder = new ProcessBuilder(Command);
+					    		builder.redirectErrorStream(true);
+					    		builder.directory(new File(backstopRootPath));
+					    		Map<String, String> env =  builder.environment();
+					    		env.put("PATH", "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+							Process p = builder.start();
+	
+							BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+							String line;
+							while ((line = in.readLine()) != null) {
+							    System.out.println("STDOUT: " + line);
+							}
+							try {
+								p.waitFor();
+								HashMap _backstopres = new HashMap();
+								
+								// Read output here
+								try {
+									File inputFile = new File(backstopResultPath);
+									DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+									DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+									Document doc = dBuilder.parse(inputFile);
+									doc.getDocumentElement().normalize();
+									NodeList nList = doc.getElementsByTagName("testcase");
+									
+									for (int temp = 0; temp < nList.getLength(); temp++) {
+										Node nNode = nList.item(temp);
+										if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+											Element eElement = (Element) nNode;
+											String _queryid = String.valueOf(Integer.parseInt(eElement.getAttribute("name").replaceAll("[\\D]", "")));
+											
+											if (eElement.getChildNodes().getLength() == 0) {
+												System.out.println("Correct Result" + _queryid);
+												_backstopres.put(_queryid, true);
+											} else {
+												System.out.println("Wrong Result" + _queryid);
+												_backstopres.put(_queryid, false);
+											}
+										}
+									}
+								} catch (Exception e) {
+							         e.printStackTrace();
+							    }
+								
+								// Update cells here
+								ImageIcon correct = new ImageIcon("." + GlobalEnv.OS_FS + "image" + GlobalEnv.OS_FS+ "◯.png");
+								ImageIcon incorrect = new ImageIcon("." + GlobalEnv.OS_FS + "image" + GlobalEnv.OS_FS+ "×.png");
+								for (int count = 0; count < tableModel.getRowCount(); count++){
+									String qid = tableModel.getValueAt(count, 1).toString();
+									System.out.println("QID is " + qid);
+									if ( (boolean) _backstopres.get(qid) )
+										tableModel.setValueAt(correct, count, 8);
+									else
+										tableModel.setValueAt(incorrect, count, 8);
+								}
+								
+							} catch (InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							System.out.println("Test ended.");
+							
+							in.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
 						execButton.setEnabled(true); // 実行ボタンを戻す
 						execButton.setText("Execute"); // 実行ボタンのテキストを戻す
 						updateButton.setEnabled(true); // アップデートボタン表示
@@ -609,15 +664,6 @@ public class Test_Run_and_Result extends JPanel {
 				}
 			}
 		});
-
-		// 停止ボタン
-		// stopButton.addActionListener(new AbstractAction() {
-		// private static final long serialVersionUID = 1L;
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// //時間測定を止める処理
-		// }
-		// });
 	}
 
 	// クエリ詳細を押す前に情報を取ってきている
@@ -625,9 +671,6 @@ public class Test_Run_and_Result extends JPanel {
 		Database.connect();
 		String sql_result = "SELECT * FROM result r ,query q WHERE r.q_id =q.id AND r.q_id ="
 				+ tableModel.getValueAt(row, 1) + " order by a_id;";
-		// String sql_result =
-		// "SELECT * FROM result r ,query q,tag t,output o ,querytag qt WHERE r.q_id =q.id AND t.t_id = qt.t_id AND q.output_id = o.o_id AND r.q_id= qt.q_id AND r.q_id= "+tableModel.getValueAt(row,
-		// 1)+";";
 		System.out.println(sql_result);
 		ResultSet rs_result = Database.select(sql_result);
 		query_result = new ArrayList<>();
@@ -659,29 +702,9 @@ public class Test_Run_and_Result extends JPanel {
 	public static void insertTableData(String testcaseID, String name_ssql, String titlename,
 			String s4, String tag_name, String media_name) {
 		System.out.println("s4= " + s4);
-		// s1 は番号（テストクエリのq_id)
-		// s2 はテストクエリ名
-		// s4 はresult(結果)
-		// ImageIcon A = new
-		// ImageIcon("."+GlobalEnv.OS_FS+"image"+GlobalEnv.OS_FS+s4+".png");
-		// Image smallImg = A.getImage().getScaledInstance((int)
-		// (A.getIconWidth() * 0.20), -1, // getScaledInstanceで大きさを変更します。
-		// Image.SCALE_SMOOTH);
-		tableModel.insertRow(tableRowCount++, new Object[] {tableRowCount,testcaseID,name_ssql,titlename,new ImageIcon("." + GlobalEnv.OS_FS + "image" + GlobalEnv.OS_FS+ s4 + ".png"), tag_name, media_name, "Details" });
+		tableModel.insertRow(tableRowCount++, new Object[] {tableRowCount,testcaseID,name_ssql,titlename,new ImageIcon("." + GlobalEnv.OS_FS + "image" + GlobalEnv.OS_FS+ s4 + ".png"), tag_name, media_name, "Details", ""});
 		//進捗バー
 		progressBar0.setValue(tableRowCount); // ここに現在の処理している行数を入れる
-		// 強制的に再描画
-		// frame.paintComponents(frame.getGraphics());
-		// frame.progressBar0.setValue(tableRowCount);
-		// //進捗バーがMaxになった場合には非表示
-		// if(progressBar0.getPercentComplete() == 1){
-		// progressBar0.setVisible(false); //非表示にする時！
-		// i++;
-		// if(i == 1){
-		// Dialog.NormalDialog("Completed!");//完了するとダイアログを表示する int
-		// i　でカウント場合分けしている
-		// }
-		// }
 	}
 
 	// テーブルの初期化
@@ -698,6 +721,30 @@ public class Test_Run_and_Result extends JPanel {
 		result_all.clear();
 		result_success.clear();
 		result_failure.clear();
+	}
+
+	public void listFilesForFolder(final File folder) {
+		boolean flag = true;
+		for (final File fileEntry : folder.listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	            listFilesForFolder(fileEntry);
+	        } else if (findExtension(fileEntry.getName()).contains("html")){
+	        		// To remove ending commas
+	        		if (flag) {
+	        			concatenatedPathString += fileEntry.getName();
+	        			flag = false;
+	        		} else {
+	        			concatenatedPathString += "," + fileEntry.getName();
+	        		}
+	        } else {
+	        		System.out.println("EXT: " + findExtension(fileEntry.getName()));
+	        }
+	    }
+	}
+	
+	public String findExtension(String filename) {
+		int separator = filename.indexOf(".");
+		return (String) filename.subSequence(separator+1, filename.length());
 	}
 
 	// テーブルへボタンを表示させるためのクラス1
@@ -743,46 +790,6 @@ public class Test_Run_and_Result extends JPanel {
 			return new String(label);
 		}
 	}
-
-	// ツリーを作る関数
-//	private static void Tree_date() {
-//		Database.connect();
-//		String sql_tree_date = "SELECT id, t.t_id, o.o_id , q_title, t_name, o_name FROM result r1, query q, tag t, output o , querytag qt WHERE NOT EXISTS (  SELECT 1  FROM result r2  WHERE r1.q_id = r2.q_id AND r1.a_day < r2.a_day ) AND r1.q_id = q.id AND q.output_id = o.o_id AND q.id = qt.q_id AND t.t_id = qt.t_id ORDER BY o.o_id, t.t_id ";
-//		ResultSet rs_tree = Database.select(sql_tree_date);
-//		tree_data_list = new ArrayList<>();
-//		TreeData treeData = null;
-//		// テーブルの結果を出力
-//		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AllTestCase");
-//		DefaultMutableTreeNode mediaNode = null;
-//		DefaultMutableTreeNode tagNode = null;
-//		DefaultMutableTreeNode titleNode = null;
-//		ArrayList<String> mediaNameList = new ArrayList<String>();
-//		ArrayList<String> tagNameList = new ArrayList<String>();
-//		ArrayList<String> titleNameList = new ArrayList<String>();
-//
-//		try {
-//			while (rs_tree.next()) {
-//				Integer query_id = rs_tree.getInt("id");
-//				Integer tag_id = rs_tree.getInt("t_id");
-//				Integer output_id = rs_tree.getInt("o_id");
-//				String query_title = rs_tree.getString("q_title");
-//				String tag_name = rs_tree.getString("t_name");
-//				String output_name = rs_tree.getString("o_name");
-//				mediaNameList.add(output_name);
-//
-//				treeData = new TreeData(query_id, tag_id, output_id,
-//						query_title, tag_name, output_name);
-//				tree_data_list.add(treeData);
-//
-//				System.out.println(output_name + ", " + tag_name + ", "
-//						+ query_title);
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
 
 	// ×ボタン
 	class MyWindowAdapter extends WindowAdapter {

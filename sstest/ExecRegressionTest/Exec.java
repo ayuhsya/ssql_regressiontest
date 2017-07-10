@@ -63,11 +63,8 @@ public class Exec extends JFrame {
 		// SQLファイル実行
 		// 回帰テストクエリを実行
 		// 結果のメッセージを表示
-
+		
 		/* 変数の定義 */
-		//		String path = Functions.getWorkingDir() + "/test_files";
-		//		String outDir = Functions.getWorkingDir() + GlobalEnv.OS_FS + "test_files_outdir" + GlobalEnv.OS_FS;
-//		resultDir = Functions.getWorkingDir() + GlobalEnv.OS_FS +"test_results"+ GlobalEnv.OS_FS;
 		String extension = ".ssql";
 		// System.out.println(path);
 		
@@ -76,7 +73,6 @@ public class Exec extends JFrame {
 		q_title = query_title;
 		q_tag = query_tag;
 		q_output = query_output;
-		
 
 		// Fileクラスのインスタンスを作成
 		File file = new File(query_name);
@@ -104,27 +100,25 @@ public class Exec extends JFrame {
 //			if (outDir.equals("")) {
 //				return; //フォルダーが作成されなかった場合
 //			}
-
-
-
+			
 			/* SSQL実行 */
 			SSQL_exec.errLog2 = "";
 			System.out.println("classPath: " + classPath);
 
-			
 			String qfname = query_name.substring(query_name.lastIndexOf(GlobalEnv.OS_FS), query_name.indexOf(".ssql"));
 			File f = new File(GlobalEnv.outDir_Path + qfname);
 			if (!f.exists()) f.mkdirs();
+			
 			//SSQL実行成功
 			if (SSQL_exec.execSuperSQL(file.toString(), classPath, driver,
-					db, null, null, GlobalEnv.outDir_Path + qfname)) {
+					db, null, null, GlobalEnv.outDir_Path)) {
 				System.out.println("SSQL実行 成功");
 				ssqlResult = "◯";
 				finResult = "◯";
 
-				/****JS/CSS****そのフォルダーの中の名前を取ってきている****/
+				// ****JS/CSS****そのフォルダーの中の名前を取ってきている*****
 				//				String path = "C:\\filelist";
-//				File dir = new File(GlobalEnv.outDir_Path); 
+				//				File dir = new File(GlobalEnv.outDir_Path); 
 
 				ListPath(f);  //ディレクトリを再帰的に読む
 
@@ -145,7 +139,7 @@ public class Exec extends JFrame {
 				String b_error = GlobalEnv.outDir_Path + GlobalEnv.OS_FS + qfname + GlobalEnv.OS_FS + NAME + ".log"; // test_files_outdirへ出力されたHTMLファイルの名前// (絶対パス)
 				Common.createFile(b_error, SSQL_exec.errLog2);
 
-				/* 1. diff */
+				// 1. diff
 				diff(a_error, b_error);
 				store_and_display_Result(query_id, queryfilename, b_error, query_title ,finResult, diff, errorLines_old, errorLines_new, query_tag, query_output);
 
@@ -157,6 +151,15 @@ public class Exec extends JFrame {
 				scrollPane.setPreferredSize(new Dimension(180, 120));
 				panel.add(scrollPane);
 			}
+			
+			DefaultTreeModel model = new DefaultTreeModel(root);
+			JTree tree = new JTree(model);
+			
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.getViewport().setView(tree);
+			scrollPane.setPreferredSize(new Dimension(180, 120));
+			panel.add(scrollPane);
+			
 			if(finResult.equals("◯")){
 				Exec.result_count_pass++;
 			} else if (finResult.equals("×")) {
@@ -166,6 +169,7 @@ public class Exec extends JFrame {
 			} else if (finResult.equals("▲")) {
 				Exec.result_count_SSQLfailed++;
 			}
+			
 			/**フォルダー削除**/
 //			Functions.delete(new File(GlobalEnv.outDir_Path));
 			String fn_tmp = query_name.substring(query_name.lastIndexOf(GlobalEnv.OS_FS) + 1, query_name.length());
@@ -220,8 +224,7 @@ public class Exec extends JFrame {
 			}
 		}
 	}
-
-
+	
 	// public static void execRegressionTest() throws NoSuchAlgorithmException,
 	// IOException {
 	// //デフォルトのパラメータとかを設定
@@ -311,7 +314,7 @@ public class Exec extends JFrame {
 	// }
 	// }
 	// }
-
+	
 	// diff: aとbのdiffをとり、違いがある場合はその箇所を表示させる
 	public static void diff(String a, String b) {
 		diff = "";
@@ -386,21 +389,22 @@ public class Exec extends JFrame {
 		RegressionTestResult rtr = new RegressionTestResult(c, qfn, ofn, ft, result, diff, diff_lines_old, diff_lines_new,query_tag,query_output);
 		Test_Run_and_Result.result_all.add(rtr);
 //		if (result.startsWith("◯")){
-//			Test_Run_and_Result.result_success.add(rtr);
-//			System.out.println("◯");
-//		}
-//		else if(result.startsWith("×")){
-//			Test_Run_and_Result.result_failure.add(rtr);
-//			System.out.println("×");
-//		}
-//		else if(result.startsWith("△")){
-//			Test_Run_and_Result.result_ssqlexec_success.add(rtr);
-//			System.out.println("△");
-//		}
-//		else if(result.startsWith("▲")){
-//			Test_Run_and_Result.result_sselexec_failure.add(rtr);
-//			System.out.println("▲");
-//		}
+//		Test_Run_and_Result.result_success.add(rtr);
+//		System.out.println("◯");
+//	}
+//	else if(result.startsWith("×")){
+//		Test_Run_and_Result.result_failure.add(rtr);
+//		System.out.println("×");
+//	}
+//	else if(result.startsWith("△")){
+//		Test_Run_and_Result.result_ssqlexec_success.add(rtr);
+//		System.out.println("△");
+//	}
+//	else if(result.startsWith("▲")){
+//		Test_Run_and_Result.result_sselexec_failure.add(rtr);
+//		System.out.println("▲");
+//	}
+
 	}
 	
 	private static void storeSsqlResult(int c, String qfn, String ft,

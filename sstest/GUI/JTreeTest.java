@@ -90,7 +90,6 @@ public final class JTreeTest extends JPanel {
 				tagNode.add(new DefaultMutableTreeNode(query_id + ":" + query_title));
 				mediaNode.add(tagNode);
 				roota.add(mediaNode);
-				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -356,8 +356,8 @@ public class TestResult_Detail extends JFrame {
 		outputListPanel.add(output_list_Label);
 		outputListPanel.add(treeView);
 
-
-		setTitle("Details - " + al.get(num).getFileTitle()); // タイトル名
+		System.out.println("Fuck it!!!! " + num);
+		setTitle("Details - " + al.get(1).getFileTitle()); // タイトル名
 
 		mainPanel = new JPanel();
 		if(resultFig.equals("◯") || resultFig.equals("△")){

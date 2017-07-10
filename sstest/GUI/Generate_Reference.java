@@ -22,10 +22,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 public class Generate_Reference extends JPanel {
-	// TODO need variables to store list of filenames
-	// make file selector with multiple selections
-	// backstopJS call here?
-	// use regressiontestresults class
 	private static final long serialVersionUID = 1L;
 	private JPanel mainPanel, buttonPanel;
 	private JButton refreshButton, generateButton;
@@ -41,7 +37,6 @@ public class Generate_Reference extends JPanel {
 	private static String backstopReferencesPath = "/Users/ayushya/Documents/eclipse-workspace/sstest/backstop/backstop_data/reference_htmls";
 	private static String backstopRootPath = "/Users/ayushya/Documents/eclipse-workspace/sstest/backstop";
 	private static String concatenatedPathString = "";
-	private static String[] envVars = {"PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"};
 	
 	/**
 	 * Launch the application.
@@ -102,7 +97,7 @@ public class Generate_Reference extends JPanel {
 		refTable.getColumn("Filename").setPreferredWidth(200);
 		refTable.getColumn("Path").setPreferredWidth(600);
 			
-		
+		// Buttons Panel
 		refreshButton = new JButton("Refresh");
 		generateButton = new JButton("Generate");
 		buttonPanel = new JPanel();
@@ -115,8 +110,8 @@ public class Generate_Reference extends JPanel {
 		mainPanel.add(buttonPanel);
 		
 		add(mainPanel);
-		//addWindowListener(new MyWindowAdapter());
 		
+		// Action listener for the Refresh Button
 		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final File folder = new File(backstopReferencesPath);
@@ -124,13 +119,12 @@ public class Generate_Reference extends JPanel {
 				System.out.println(concatenatedPathString);
 			}
 		});
-		
+
+		// Action listener for the Generate Button
 		generateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("In generate BUTTON! " + concatenatedPathString);
-				final String[] Command = {"/usr/local/bin/backstop", "reference", "--configPath=backstop-settings.js", "--paths=" + concatenatedPathString};   //Bash Command
-				//final String Command = "printenv";
-				
+				final String[] Command = {"/usr/local/bin/backstop", "reference", "--configPath=backstop-settings.js", "--paths=" + concatenatedPathString};				
 				// create a process and execute
 			    try {
 			    		ProcessBuilder builder = new ProcessBuilder(Command);
@@ -162,6 +156,7 @@ public class Generate_Reference extends JPanel {
 		});
 	}
 	
+	// Custom table model
 	public class RefTableModel extends DefaultTableModel{
 		RefTableModel(String[] columnNames, int rowNum){
 			super(columnNames, rowNum);
@@ -173,24 +168,26 @@ public class Generate_Reference extends JPanel {
 
 	}
 	
+	// Method to insert rows into the table GUI
 	public static void insertTableData(String filename, String path) {
 		refList.insertRow(tableRowCount++, 
 				new Object[]{filename, path});
 	}
 	
+	// Initialize table
 	public static void initTable() {
 		try { refList.setRowCount(0); } catch (Exception e) { }
 		tableRowCount = 0;
 	}
 	
+	// Method to populate the table with files from the specified directory and also create a concatenated path string
 	public void listFilesForFolder(final File folder) {
 		boolean flag = true;
 		for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
 	            listFilesForFolder(fileEntry);
-	        } else {
+	        } else if (findExtension(fileEntry.getName()).contains("html")){
 	        		insertTableData(fileEntry.getName(), fileEntry.getAbsolutePath());
-	        		
 	        		// To remove ending commas
 	        		if (flag) {
 	        			concatenatedPathString += fileEntry.getName();
@@ -198,8 +195,15 @@ public class Generate_Reference extends JPanel {
 	        		} else {
 	        			concatenatedPathString += "," + fileEntry.getName();
 	        		}
+	        } else {
+	        		System.out.println("EXT: " + findExtension(fileEntry.getName()));
 	        }
 	    }
 	}
-
+	
+	// Method to fetch only .html files
+	public String findExtension(String filename) {
+		int separator = filename.indexOf(".");
+		return (String) filename.subSequence(separator+1, filename.length());
+	}
 }
